@@ -4,3 +4,4 @@ flask-moment
 flask-wtf
 flask-SQLAlchemy
 flask-migrate
+psycopg2-binary
