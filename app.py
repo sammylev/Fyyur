@@ -164,12 +164,12 @@ def index():
   return render_template('pages/home.html')
 
 
-#  Venues
+#  Display Venue
 #  ----------------------------------------------------------------
 
 @app.route('/venues')
 def venues():
-  
+
   venue_query = Venue.query.all()
   unique_locations = Venue.query.with_entities(Venue.city,Venue.state).distinct(Venue.city,Venue.state).all()
   data = []
@@ -187,6 +187,7 @@ def venues():
 
   return render_template('pages/venues.html', areas=data);
 
+# Search for venue by name
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
   
@@ -206,6 +207,7 @@ def search_venues():
 
   return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
 
+# Display the venue details
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
 
@@ -289,6 +291,7 @@ def create_venue_submission():
     
   return render_template('pages/home.html')
 
+# Delete a venue
 @app.route('/venues/<venue_id>', methods=['DELETE'])
 def delete_venue(venue_id):
   # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
@@ -314,6 +317,7 @@ def artists():
 
   return render_template('pages/artists.html', artists=data)
 
+# Search for an artist by name
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
   
@@ -333,6 +337,7 @@ def search_artists():
 
   return render_template('pages/search_artists.html', results=response, search_term=request.form.get('search_term', ''))
 
+# Display the details of an artist
 @app.route('/artists/<int:artist_id>')
 def show_artist(artist_id):
   
@@ -388,6 +393,8 @@ def show_artist(artist_id):
 
 #  Update
 #  ----------------------------------------------------------------
+
+#Display the existing values for an artist that the user wants to edit
 @app.route('/artists/<int:artist_id>/edit', methods=['GET'])
 def edit_artist(artist_id):
   form = ArtistForm()
@@ -409,6 +416,7 @@ def edit_artist(artist_id):
 
   return render_template('forms/edit_artist.html', form=form, artist=artist)
 
+# Update the artist info with user entered info
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def edit_artist_submission(artist_id):
   
@@ -440,6 +448,7 @@ def edit_artist_submission(artist_id):
 
   return redirect(url_for('show_artist', artist_id=artist_id))
 
+# Display the existing values for a venue that a user wants to update
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
 def edit_venue(venue_id):
   form = VenueForm()
@@ -461,6 +470,7 @@ def edit_venue(venue_id):
 
   return render_template('forms/edit_venue.html', form=form, venue=venue)
 
+# Update the venue to reflect user entered values
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
 
@@ -545,6 +555,7 @@ def shows():
 
   return render_template('pages/shows.html', shows=data)
 
+# Create a show
 @app.route('/shows/create')
 def create_shows():
   # renders form. do not touch.
