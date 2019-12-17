@@ -32,6 +32,22 @@
           <label for="genres">Facebook Link</label>
           {{ form.facebook_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
         </div>
+      <div class="form-group">
+          <label for="image_link">Image Link</label>
+          {{ form.image_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
+        </div>
+      <div class="form-group">
+          <label for="website_link">Website Link</label>
+          {{ form.website_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
+        </div>
+      <div class="form-group">
+        <label for="status">Are you currently availabile?</label>
+        {{ form.status(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div class="form-group">
+        <label for="status_comment">Availability Comments</label>
+        {{ form.status_comment(class_ = 'form-control', autofocus = true) }}
+      </div>
       <input type="submit" value="Edit Artist" class="btn btn-primary btn-lg btn-block">
     </form>
   </div>

@@ -118,7 +118,6 @@ class VenueForm(Form):
         'image_link'
     )
     genres = SelectMultipleField(
-        # TODO implement enum restriction
         'genres', validators=[DataRequired()],
         choices=genre_list
     )
@@ -145,23 +144,19 @@ class ArtistForm(Form):
         choices=state_list
     )
     phone = StringField(
-        # TODO implement validation logic for state
         'phone', validators=[DataRequired()]
     )
     image_link = StringField(
         'image_link', validators=[DataRequired()]
     )
     genres = SelectMultipleField(
-        # TODO implement enum restriction
         'genres', validators=[DataRequired()],
         choices=genre_list
     )
     facebook_link = StringField(
-        # TODO implement enum restriction
         'facebook_link', validators=[URL()]
     )
     website_link = StringField(
-        # TODO implement enum restriction
         'website_link', validators=[URL()]
     )
     status = SelectField(
@@ -172,4 +167,15 @@ class ArtistForm(Form):
         'status_comment', validators=[DataRequired()]
     )
 
-# TODO IMPLEMENT NEW ARTIST FORM AND NEW SHOW FORM
+class ShowForm(Form):
+    artist_id = StringField(
+        'artist_id'
+    )
+    venue_id = StringField(
+        'venue_id'
+    )
+    start_time = DateTimeField(
+        'start_time',
+        validators=[DataRequired()],
+        default=datetime.today()
+    )
