@@ -70,7 +70,7 @@ class Venue(db.Model):
       db.session.commit()
 
     def __repr__(self):
-      return f'<Object: Venue, Name: {self.name}, Address: {self.address}, City: {self.city}, State: {self.state}, Phone: {self.phone}, Image: {self.image_link}, Facebook: {self.facebook_link}, Website: {self.website_link}, Status: {self.status}, Status Comment: {self.status_comment}>'
+      return f'<Object: Venue, Name: {self.name}, Address: {self.address}, City: {self.city}, State: {self.state}, Phone: {self.phone}, Image: {self.image_link}, Facebook: {self.facebook_link}, Website: {self.website_link}, Status: {self.status}, Status Comment: {self.status_comment}, Genres: {self.genres}>'
 
     @property
     def set(self):
@@ -183,8 +183,6 @@ def venues():
     data.append({'city':location.city,'state':location.state,'venues':venues_list})
     venues_list=[]
 
-    app.logger.info(data)
-
   return render_template('pages/venues.html', areas=data);
 
 # Search for venue by name
@@ -270,6 +268,8 @@ def create_venue_form():
 
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
+  form = VenueForm(request.form)
+
   try:
     new_venue = Venue(
       name=request.form['name'],
@@ -281,10 +281,10 @@ def create_venue_submission():
       image_link=request.form['image_link'],
       status=strtobool(request.form['status']),
       status_comment=request.form['status_comment'],
-      genres = request.form['genres']
+      genres = form.genres.data
       )
     Venue.add(new_venue)
-    app.logger.info(new_venue)
+    app.logger.info(new_venue.genres)
     flash('Venue ' + request.form['name'] + ' was successfully listed!')
   except SQLAlchemyError as e:
     flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')
@@ -419,6 +419,7 @@ def edit_artist(artist_id):
 # Update the artist info with user entered info
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def edit_artist_submission(artist_id):
+  form = ArtistForm(request.form)
   
   try:
     artist = Artist.query.get(artist_id)
@@ -437,7 +438,7 @@ def edit_artist_submission(artist_id):
     artist.image_link=request.form['image_link']
     artist.website_link=request.form['website_link']
     artist.status_comment=request.form['status_comment']
-    artist.genres=request.form['genres']
+    artist.genres=form.genres.data
     
     Artist.update(artist)
     app.logger.info(artist)
@@ -473,6 +474,7 @@ def edit_venue(venue_id):
 # Update the venue to reflect user entered values
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
+  form = VenueForm(request.form)
 
   try:
     venue = Venue.query.get(venue_id)
@@ -490,7 +492,7 @@ def edit_venue_submission(venue_id):
     venue.facebook_link=request.form['facebook_link'],
     venue.image_link=request.form['image_link'],
     venue.status_comment=request.form['status_comment'],
-    venue.genres = request.form['genres']
+    venue.genres = form.genres.data
       
     venue.update()
     app.logger.info(venue)
@@ -511,7 +513,8 @@ def create_artist_form():
 
 @app.route('/artists/create', methods=['POST'])
 def create_artist_submission():
-
+  form = ArtistForm(request.form)
+  
   try:
     new_artist = Artist(
       name=request.form['name'],
@@ -523,10 +526,9 @@ def create_artist_submission():
       website_link=request.form['website_link'],
       status=strtobool(request.form['status']),
       status_comment=request.form['status_comment'],
-      genres=request.form['genres']
+      genres=form.genres.data
       )
     Artist.add(new_artist)
-    app.logger.info(new_artist)
     flash('Artist ' + request.form['name'] + ' was successfully listed!')
   except SQLAlchemyError as e:
     flash('An error occurred. Artist ' + request.form['name'] + ' could not be listed.')
